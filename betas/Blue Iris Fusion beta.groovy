@@ -64,15 +64,11 @@ Version 3.0.4 - 29Nov2017	Added a method to rename camera devices to bicamera[i]
 Version 3.0.5 - 8Dec17  	Fixed Error when user ties a ST mode to BI's Inactive profile (the 0 was being treated as false and not switching modes for automatic mode integration)
 							Improved settings and operation when not using profile<>mode integration.
                             Added step in DNI fix method to prevent renaming already renamed devices.
-Version 3.0.6 - 24Dec17		Cleaned up log.info verbage
+Version 3.0.6 - BETA		Cleaned up log.info verbage
 							Fixed new install flow so that OAUTH tokens are created if they haven't already been (so you don't have to hit the switch first)
-                            Added ability to add custom polling interval for server DTH
-
+                            Todo - there may be a problem in external profile changing... It is getting result fail despite changing the profile...
 
 TODO:
-Todo - there may be a problem in external profile changing... It is getting result fail despite changing the profile...
-todo - there is a todo for adding call back to local mode when not using bi server dth...
-
 -Add ability to enter both LAN and WAN address for: failover, camera live feed
 -Try to get motion alerts from BI to Camera Devices without using OAuth.  Some example code in here already (lanEventHandler), and look at:
 https://community.smartthings.com/t/smartthings-labs-and-lan-devices/1100/11
@@ -82,7 +78,7 @@ https://community.smartthings.com/t/help-receiving-http-events-from-raspberry-pi
 https://community.smartthings.com/t/tutorial-creating-a-rest-smartapp-endpoint/4331
 */
 
-def appVersion() {"3.0.6"}
+def appVersion() {"3.0.5"}
 
 mappings {
     path("/active/:camera") {
@@ -784,7 +780,7 @@ def externalAction(stringCommand) {  //can accept string of either: number for p
                             if (loggingOn) log.debug "response 3: " + response3.data
                             if (response3.data.result == "success"){
                                 if (loggingOn) log.debug ("BI_Retrieved Status")
-                                if (isProfileChange) {   //todo - something to try to get this back to normal, create a bodyCommand using if loops so you don't have to break up the code here, it's just say body: [body]
+                                if (isProfileChange) {   
                                     //Begin Profile Change Code
                                     if (response3.data.data.profile != profile) {        
                                         httpPostJson(uri: host + ':' + port, path: '/json',  body: ["cmd":"status","profile":profile,"lock":lock,"session":session]) { response4 ->
